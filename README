@@ -1,0 +1,61 @@
+SLCT version 0.05 - simple logfile clustering tool
+
+
+Introduction:
+
+SLCT is a tool that was designed to find clusters in logfile(s), so that
+each cluster corresponds to a certain line pattern that occurs frequently
+enough. The special cluster of outliers contains lines that do not fit
+well to any regular cluster.
+
+
+Availability:
+
+This program is distributed under the terms of GNU General Public License, 
+and can be downloaded from http://kodu.neti.ee/~risto/slct/
+
+
+Release Notes:
+
+Has been tested on Linux and Solaris (compiled with gcc), 
+but is likely to compile and work on other platforms as well.
+
+
+Files in this package:
+
+ChangeLog - change log
+COPYING - copy of GNU General Public License
+README - this file
+slct.1 - SLCT man page
+slct.c - SLCT program
+slct.spec - SLCT rpm spec file
+
+
+Installation:
+
+Compile the slct.c file with your favourite compiler, and move the binary
+and the man page to appropriate directories. With gcc, the following line
+is sufficient for compiling: 
+
+gcc -o slct -O2 slct.c
+
+If you wish to add support for large files over 2GB, compile with the 
+following options:
+
+gcc -o slct -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 slct.c
+
+
+Author: 
+
+Risto Vaarandi (ristov at users d0t s0urcef0rge d0t net)
+
+
+Acknowledgements:
+
+This work is supported by SEB Eesti Uhispank.
+
+This software uses the fast and efficient string hashing algorithm 
+by M.V.Ramakrishna and Justin Zobel.
+
+RPM spec file contributed by Bennett Todd.
+

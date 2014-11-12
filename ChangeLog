@@ -1,0 +1,21 @@
+0.01 (2003-04-13)
+- first release
+
+0.02 (2003-05-26) 
+- added the '-g' option for reducing computational complexity when SLCT
+  is invoked with the '-j' option
+- the default value for the '-c' option is now 
+  (100 * the number of frequent words)
+- improved documentation
+
+0.03 (2003-08-25)
+- the value of the '-f' option is taken into account when finding outliers
+  (the file of outliers will not contain lines that do not pass the filter)
+- fixed bad loops in free_inputfiles() and free_template() functions
+
+0.04 (2003-10-09)
+- added word frequency statistics logging
+
+0.05 (2007-09-09)
+- fixed a minor bug in a memory releasing function that is invoked at program
+  termination when the clustering algorithm has finished its work
