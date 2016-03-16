@@ -1,26 +1,31 @@
-BIN_DIRECTORY=bin
+PREFIX ?= /usr/local
+BUILD_DIRECTORY=build
 EXE_NAME=slct
-INSTALL_DIRECTORY=/usr/local/bin
 
 # Ensure that the output directory exists
-dummy := $(shell test -d $(BIN_DIRECTORY) || mkdir -p $(BIN_DIRECTORY))
+dummy := $(shell test -d $(BUILD_DIRECTORY)/bin || mkdir -p $(BUILD_DIRECTORY)/bin)
 
-compile: $(BIN_DIRECTORY)/$(EXE_NAME)
-$(BIN_DIRECTORY)/$(EXE_NAME): slct.c
-	gcc -o $(BIN_DIRECTORY)/$(EXE_NAME) -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 slct.c
+build: compile man
 
-install: compile man $(INSTALL_DIRECTORY)/$(EXE_NAME)
-$(INSTALL_DIRECTORY)/$(EXE_NAME):
-	install --group=root --owner=root $(BIN_DIRECTORY)/$(EXE_NAME) $(INSTALL_DIRECTORY)
+compile: $(BUILD_DIRECTORY)/bin/$(EXE_NAME)
+$(BUILD_DIRECTORY)/bin/$(EXE_NAME): slct.c
+	gcc -o $(BUILD_DIRECTORY)/bin/$(EXE_NAME) -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 slct.c
 
-man: /usr/local/man/man1/slct.1.gz
-/usr/local/man/man1/slct.1.gz: slct.1
-	install -g 0 -o 0 -m 0644 slct.1 /usr/local/man/man1/
-	gzip /usr/local/man/man1/slct.1
+man: $(BUILD_DIRECTORY)/man/man1/slct.1.gz
+$(BUILD_DIRECTORY)/man/man1/slct.1.gz: slct.1
+	mkdir -p $(BUILD_DIRECTORY)/man/man1
+	install -m 0644 slct.1 $(BUILD_DIRECTORY)/man/man1/
+	gzip $(BUILD_DIRECTORY)/man/man1/slct.1
+
+install: build $(PREFIX)/bin/$(EXE_NAME)
+$(PREFIX)/bin/$(EXE_NAME):
+	mkdir -p $(PREFIX)/bin $(PREFIX)/man/man1
+	install $(BUILD_DIRECTORY)/bin/$(EXE_NAME) $(PREFIX)/bin/$(EXE_NAME)
+	install $(BUILD_DIRECTORY)/man/man1/slct.1.gz $(PREFIX)/man/man1/slct.1.gz
 
 uninstall:
-	rm $(INSTALL_DIRECTORY)/$(EXE_NAME)
-	rm /usr/local/man/man1/slct.1.gz
+	rm $(PREFIX)/bin/$(EXE_NAME)
+	rm $(PREFIX)/man/man1/slct.1.gz
 
 clean:
-	rm -rf $(BIN_DIRECTORY)
+	rm -rf $(BUILD_DIRECTORY)
